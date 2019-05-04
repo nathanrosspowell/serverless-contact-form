@@ -2,6 +2,15 @@ service: serverless-contact-form
 provider:
   name: aws
   runtime: nodejs8.10
+  iamRoleStatements:
+    - Effect: "Allow"
+      Action:
+        - "ses:SendEmail"
+      Resource: "*"
+    - Effect: "Allow"
+      Action: 
+        - "secretsmanager:GetSecretValue"
+      Resource: "*"
 functions:
   contact:
     handler: handler.contact
@@ -10,3 +19,5 @@ functions:
           path: contact
           method: post
           cors: true
+    environment:
+      secret_manager_token: contact_form_secrets
